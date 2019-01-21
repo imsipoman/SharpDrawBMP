@@ -14,20 +14,20 @@ import math
 #     参数定义    #
 ##################
 ###############################################################################################################
-url = "logo.png"       #图片url地址
+url = "timg.jpg"       #图片url地址
 size = 128,64          #屏幕大小
 name = "face"          #保存文件名称
 file_format = "txt"    #文件格式
 mode = 0               #模式及过滤选择：0：纯灰度、 1：边缘提取、 2:模糊、 3:轮廓 4:边缘增强 5:浮雕 6:锐化 7:光滑 
 invert = 0             #像素颜色反选
-threshold = 0          #二值化阈值 0-255，单色屏幕中灰度大于此阈值的则被显示
+threshold = 245          #二值化阈值 0-255，单色屏幕中灰度大于此阈值的则被显示
 center = 1             #左右居中显示，0:关闭|1:开启 默认开启
 center_up = 1          #上下居中显示，0:关闭|1:开启 默认开启
 Img_MakeUp = 0         #图像补齐，如果出现最右侧出现缺少可开启补0
 ###############################################################################################################
 #                       控制台显示内容开关 0:关闭|1:开启                                                         
 show_wh = 1            #显示宽高
-show_pixel = 1         #二进制图像打印显示
+show_pixel = 0         #二进制图像打印显示
 ###############################################################################################################
 file_path = name + '.' + file_format
 txt_file = open(file_path,'w')
@@ -58,13 +58,13 @@ col = []
 hexStr = ""
 txt_file.write('const uint8_t rook_bitmap[] U8G_PROGMEM = {')
 cnt_MaxNum = math.ceil(w/8)
-cnt_num = 0
+hexRowStr = ""
 for x in range(h):
     if(row != []):
-       for z in row:
+        print(row)
+        for z in row:
             hexStr = str(hexStr + str(z))
-            if(show_pixel == 1):
-                print(hexStr)
+            hexRowStr = str(hexRowStr + str(z))
             if(len(hexStr) == w and w%8 != 0 and Img_MakeUp == 1):
                 for x in range(8*cnt_MaxNum-w):
                     hexStr = str(hexStr + str(0))
@@ -72,22 +72,25 @@ for x in range(h):
                 xbb = hex(int(hexStr,2))
                 txt_file.write(xbb+',')
                 hexStr = ""
-                
+    if(show_pixel == 1):
+        print(hexRowStr)            
     txt_file.write('\n')
-    hexStr = ""        
-    col.append(row)
+    hexStr = ""
+    hexRowStr = ""        
+    #col.append(row)
     row.clear()
     for y in range(w):
         if(invert == 0):
-            if(ima[y,x] > threshold):
+           if(ima[y,x] > threshold):
                 row.append(1)
             else:
-                row.append(0)
-        else:
+               row.append(0)
+        if(invert == 1):
             if(ima[y,x] > threshold):
                 row.append(0)
-            else:
+           else:
                 row.append(1)
+
 txt_file.write('};')
 txt_file.write('\n\n')
 u8g_x = 0
