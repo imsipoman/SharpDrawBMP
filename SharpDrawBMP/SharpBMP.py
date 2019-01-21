@@ -27,7 +27,7 @@ Img_MakeUp = 0         #图像补齐，如果出现最右侧出现缺少可开�
 ###############################################################################################################
 #                       控制台显示内容开关 0:关闭|1:开启                                                         
 show_wh = 1            #显示宽高
-show_pixel = 0         #二进制图像打印显示
+show_pixel = 1         #二进制图像打印显示
 ###############################################################################################################
 file_path = name + '.' + file_format
 txt_file = open(file_path,'w')
@@ -59,30 +59,28 @@ hexStr = ""
 txt_file.write('const uint8_t rook_bitmap[] U8G_PROGMEM = {')
 cnt_MaxNum = math.ceil(w/8)
 hexRowStr = ""
-row_count = 0
 for x in range(h):
     if(row != []):
         #print(row)
         for z in row:
-            row_count = row_count + 1 
             hexStr = str(hexStr + str(z))
             hexRowStr = str(hexRowStr + str(z))
             if(len(hexStr) == w and w%8 != 0 and Img_MakeUp == 1):
                 for x in range(8*cnt_MaxNum-w):
                     hexStr = str(hexStr + str(0))
-            if (len(hexStr) == 8 or row_count == w):
+            if(len(hexRowStr) == w and len(hexRowStr)%8 != 0):
+                    for y in range(len(hexRowStr)%8):
+                        hexStr = str(hexStr + str(0))          
+            if (len(hexStr) == 8 ):
                 col.append(hexStr)
                 xbb = hex(int(hexStr,2))
                 txt_file.write(xbb+',')
-                hexStr = ""
-    #print(col)
-    row_count = 0            
+                hexStr = ""           
     if(show_pixel == 1):
         print(hexRowStr)            
     txt_file.write('\n')
     hexStr = ""
     hexRowStr = ""
-    col.clear()        
     #col.append(row)
     row.clear()
     for y in range(w):
