@@ -61,7 +61,7 @@ cnt_MaxNum = math.ceil(w/8)
 hexRowStr = ""
 for x in range(h):
     if(row != []):
-        print(row)
+        #print(row)
         for z in row:
             hexStr = str(hexStr + str(z))
             hexRowStr = str(hexRowStr + str(z))
@@ -81,14 +81,14 @@ for x in range(h):
     row.clear()
     for y in range(w):
         if(invert == 0):
-           if(ima[y,x] > threshold):
+            if(ima[y,x] > threshold):
                 row.append(1)
             else:
                row.append(0)
         if(invert == 1):
             if(ima[y,x] > threshold):
                 row.append(0)
-           else:
+            else:
                 row.append(1)
 
 txt_file.write('};')
