@@ -105,7 +105,7 @@ if(size[0] != w):
 u8g_y = 0
 if(size[1] != h and center):
     u8g_y = math.floor((size[1]-h)/2)
-cnt = math.floor(w/8)            
+cnt = math.ceil(w/8)            
 txt_file.write('u8g.drawBitmapP(' + str(u8g_x) + ','+ str(u8g_y) +',' + str(cnt) + ','+ str(h) + ', rook_bitmap);')                
 txt_file.close()
 print('已生成:'+ file_path)
